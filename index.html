@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tabela de Preços Dinâmica</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="container">
+		<h1>Tabela de Preços Dinâmica</h1>
+		<p>Clique nos valores de Mensalidade para editá-los e insira os valores totais de CNPJ, SKU e Usuários para calcular
+			os adicionais.</p>
+		<table id="priceTable">
+			<thead>
+				<tr>
+					<th rowspan="2"></th>
+					<th colspan="3">Planos</th>
+				</tr>
+				<tr>
+					<th>Standard</th>
+					<th>Full</th>
+					<th>Enterprise</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- Conteúdo (Content) -->
+				<tr class="section-header">
+					<td colspan="4">CONTEÚDO</td>
+				</tr>
+				<tr>
+					<td>Suporte Mensal</td>
+					<td>X</td>
+					<td>X</td>
+					<td>X</td>
+				</tr>
+				<tr>
+					<td>Solução de Compras</td>
+					<td>X</td>
+					<td>X</td>
+					<td>X</td>
+				</tr>
+				<tr>
+					<td>Relatórios Padrão</td>
+					<td>X</td>
+					<td>X</td>
+					<td>X</td>
+				</tr>
+				<tr>
+					<td>Atualização de Soluções de Toda Rede</td>
+					<td>X</td>
+					<td>X</td>
+					<td>X</td>
+				</tr>
+				<tr>
+					<td>Solução de Cotações</td>
+					<td></td>
+					<td>X</td>
+					<td>X</td>
+				</tr>
+				<tr>
+					<td>Solução de DRP (Reposições)</td>
+					<td></td>
+					<td>X</td>
+					<td>X</td>
+				</tr>
+				<tr>
+					<td>CNPJ Base</td>
+					<td data-plan="standard" data-type="cnpj_base" data-value="1">1</td>
+					<td data-plan="full" data-type="cnpj_base" data-value="5">5</td>
+					<td data-plan="enterprise" data-type="cnpj_base" data-value="10">10</td>
+				</tr>
+				<tr>
+					<td>Quantidade de SKUs Base</td>
+					<td data-plan="standard" data-type="sku_base" data-value="10000">10.000</td>
+					<td data-plan="full" data-type="sku_base" data-value="50000">50.000</td>
+					<td data-plan="enterprise" data-type="sku_base" data-value="100000">100.000</td>
+				</tr>
+				<tr>
+					<td>Usuários Base</td>
+					<td data-plan="standard" data-type="user_base" data-value="2">2</td>
+					<td data-plan="full" data-type="user_base" data-value="5">5</td>
+					<td data-plan="enterprise" data-type="user_base" data-value="Infinity">Ilimitado</td>
+				</tr>
+
+				<!-- Setup (Setup) -->
+				<tr class="section-header">
+					<td colspan="4">SETUP (Valores Fixos)</td>
+				</tr>
+				<tr>
+					<td>Taxa de Adesão</td>
+					<td class="setup" data-plan="standard" data-type="adesao" data-value="13100">R$ 13.100,00</td>
+					<td class="setup" data-plan="full" data-type="adesao" data-value="17320">R$ 17.320,00</td>
+					<td class="setup" data-plan="enterprise" data-type="adesao" data-value="21920">R$ 21.920,00</td>
+				</tr>
+				<tr>
+					<td>Implantação (Por Banco de Dados)</td>
+					<td class="setup" data-plan="standard" data-type="implantacao" data-value="2500">R$ 2.500,00</td>
+					<td class="setup" data-plan="full" data-type="implantacao" data-value="5000">R$ 5.000,00</td>
+					<td class="setup" data-plan="enterprise" data-type="implantacao" data-value="10000">R$ 10.000,00</td>
+				</tr>
+				<tr class="subtotal">
+					<td>Sub-Total</td>
+					<td id="subtotal-standard"></td>
+					<td id="subtotal-full"></td>
+					<td id="subtotal-enterprise"></td>
+				</tr>
+				<tr>
+					<td>Integração ERP (Por ERP)</td>
+					<td class="setup" data-plan="standard" data-type="integracao" data-value="13680">R$ 13.680,00</td>
+					<td class="setup" data-plan="full" data-type="integracao" data-value="16560">R$ 16.560,00</td>
+					<td class="setup" data-plan="enterprise" data-type="integracao" data-value="16560">R$ 16.560,00</td>
+				</tr>
+				<tr class="total">
+					<td>Total Setup</td>
+					<td id="total-setup-standard"></td>
+					<td id="total-setup-full"></td>
+					<td id="total-setup-enterprise"></td>
+				</tr>
+
+				<!-- Mensalidade (Monthly Fee) - Editável -->
+				<tr class="section-header">
+					<td colspan="4">MENSALIDADE (Valores Base e Adicionais Editáveis)</td>
+				</tr>
+				<tr>
+					<td>Mensalidade Base</td>
+					<td class="monthly editable" data-plan="standard" data-type="base" data-value="1250">R$ 1.250,00</td>
+					<td class="monthly editable" data-plan="full" data-type="base" data-value="2500">R$ 2.500,00</td>
+					<td class="monthly editable" data-plan="enterprise" data-type="base" data-value="3500">R$ 3.500,00</td>
+				</tr>
+				<tr>
+					<td>CNPJ Adicional (por CNPJ)</td>
+					<td class="monthly editable" data-plan="standard" data-type="cnpj_add" data-value="50">R$ 50,00</td>
+					<td class="monthly editable" data-plan="full" data-type="cnpj_add" data-value="100">R$ 100,00</td>
+					<td class="monthly editable" data-plan="enterprise" data-type="cnpj_add" data-value="100">R$ 100,00</td>
+				</tr>
+				<tr>
+					<td>SKU Adicional (por 10.000 SKUs)</td>
+					<td class="monthly editable" data-plan="standard" data-type="sku_add" data-value="150">R$ 150,00</td>
+					<td class="monthly editable" data-plan="full" data-type="sku_add" data-value="250">R$ 250,00</td>
+					<td class="monthly editable" data-plan="enterprise" data-type="sku_add" data-value="250">R$ 250,00</td>
+				</tr>
+				<tr>
+					<td>Usuário Adicional (por Usuário)</td>
+					<td class="monthly editable" data-plan="standard" data-type="user_add" data-value="25">R$ 25,00</td>
+					<td class="monthly editable" data-plan="full" data-type="user_add" data-value="50">R$ 50,00</td>
+					<td class="monthly editable" data-plan="enterprise" data-type="user_add" data-value="0">R$ 0,00</td>
+				</tr>
+
+				<!-- Resultados dos Adicionais -->
+				<tr class="additional-cost">
+					<td>Custo Adicional CNPJ</td>
+					<td id="add-cnpj-standard">R$ 0,00</td>
+					<td id="add-cnpj-full">R$ 0,00</td>
+					<td id="add-cnpj-enterprise">R$ 0,00</td>
+				</tr>
+				<tr class="additional-cost">
+					<td>Custo Adicional SKU</td>
+					<td id="add-sku-standard">R$ 0,00</td>
+					<td id="add-sku-full">R$ 0,00</td>
+					<td id="add-sku-enterprise">R$ 0,00</td>
+				</tr>
+				<tr class="additional-cost">
+					<td>Custo Adicional Usuário</td>
+					<td id="add-user-standard">R$ 0,00</td>
+					<td id="add-user-full">R$ 0,00</td>
+					<td id="add-user-enterprise">R$ 0,00</td>
+				</tr>
+
+				<tr class="total">
+					<td>Total Mensalidade</td>
+					<td id="total-monthly-standard"></td>
+					<td id="total-monthly-full"></td>
+					<td id="total-monthly-enterprise"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="calculator-section">
+			<h2>Calculadora de Adicionais</h2>
+			<p>Insira os valores totais desejados para CNPJ, SKU e Usuários para calcular os custos adicionais.</p>
+			<div class="input-group">
+				<label for="input-cnpj">CNPJs Totais:</label>
+				<input type="number" id="input-cnpj" value="1" min="1">
+			</div>
+			<div class="input-group">
+				<label for="input-sku">SKUs Totais (em unidades):</label>
+				<input type="number" id="input-sku" value="10000" min="10000" step="10000">
+			</div>
+			<div class="input-group">
+				<label for="input-users">Usuários Totais:</label>
+				<input type="number" id="input-users" value="2" min="2">
+			</div>
+			<div class="input-group">
+				<button id="calculate-button">Calcular</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+
+</html>
