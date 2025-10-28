@@ -11,6 +11,11 @@
 <body>
 	<div class="container">
 		<h1>Tabela de Preços Dinâmica</h1>
+		<div class="plan-selector-container">
+			<button class="plan-selector-button" data-plan="standard">Standard</button>
+			<button class="plan-selector-button" data-plan="full">Full</button>
+			<button class="plan-selector-button" data-plan="enterprise">Enterprise</button>
+		</div>
 		<p>Clique nos valores de Mensalidade para editá-los e insira os valores totais de CNPJ, SKU e Usuários para calcular
 			os adicionais.</p>
 		<table id="priceTable">
@@ -107,8 +112,9 @@
 					<td id="subtotal-full"></td>
 					<td id="subtotal-enterprise"></td>
 				</tr>
-				<tr>
-					<td>Integração ERP (Por ERP)</td>
+				<tr id="erp-integration-row">
+					<td><label for="erp-integration-checkbox">Integração ERP (Por ERP)</label> <input type="checkbox"
+							id="erp-integration-checkbox" checked></td>
 					<td class="setup" data-plan="standard" data-type="integracao" data-value="13680">R$ 13.680,00</td>
 					<td class="setup" data-plan="full" data-type="integracao" data-value="16560">R$ 16.560,00</td>
 					<td class="setup" data-plan="enterprise" data-type="integracao" data-value="16560">R$ 16.560,00</td>

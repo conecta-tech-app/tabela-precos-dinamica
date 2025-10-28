@@ -166,3 +166,62 @@ p {
 .input-group:last-child {
 	justify-content: center;
 }
+
+/* Estilo para o Checkbox do ERP */
+#erp-integration-row td:first-child {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#erp-integration-checkbox {
+	margin-left: 10px;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+/* Estilo para a Seleção de Plano */
+.plan-selector-container {
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.plan-selector-button {
+	background-color: #ccc;
+	color: #333;
+	border: 1px solid #aaa;
+	padding: 10px 20px;
+	margin: 0 5px;
+	cursor: pointer;
+	font-weight: bold;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.plan-selector-button:hover {
+	background-color: #bbb;
+}
+
+.plan-selector-button.selected {
+	background-color: #0056b3;
+	color: white;
+	border-color: #004494;
+	box-shadow: 0 0 8px rgba(0, 86, 179, 0.5);
+}
+
+/* Destaque para a coluna do plano selecionado */
+#priceTable .highlighted {
+	background-color: #e6f7ff;
+	/* Cor de destaque para a coluna */
+}
+
+#priceTable .highlighted.editable {
+	background-color: #fff0b3;
+	/* Cor de destaque para células editáveis na coluna selecionada */
+}
+
+#priceTable thead th:nth-child(2),
+#priceTable thead th:nth-child(3),
+#priceTable thead th:nth-child(4) {
+	transition: background-color 0.3s;
+}

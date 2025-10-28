@@ -60,7 +60,13 @@ function calculateTotals() {
 
 		// --- CÁLCULO DO SETUP ---
 		const subTotalSetup = data.adesao + data.implantacao;
-		const totalSetup = subTotalSetup + data.integracao;
+		let totalSetup = subTotalSetup;
+
+		// Verifica o checkbox de Integração ERP
+		const erpCheckbox = document.getElementById('erp-integration-checkbox');
+		if (erpCheckbox && erpCheckbox.checked) {
+			totalSetup += data.integracao;
+		}
 
 		// Atualizar valores do Setup na tabela
 		document.getElementById(`subtotal-${plan}`).textContent = formatCurrency(subTotalSetup);
@@ -161,11 +167,62 @@ function setupEditableFields() {
 	});
 }
 
+function setupPlanSelector() {
+	const buttons = document.querySelectorAll('.plan-selector-button');
+	const table = document.getElementById('priceTable');
+	const plans = ['standard', 'full', 'enterprise'];
+
+	buttons.forEach(button => {
+		button.addEventListener('click', function () {
+			const selectedPlan = this.getAttribute('data-plan');
+
+			// 1. Remove a seleção de todos os botões e colunas
+			buttons.forEach(btn => btn.classList.remove('selected'));
+			table.querySelectorAll('tr').forEach(row => {
+				row.classList.remove('highlighted');
+			});
+
+			// 2. Adiciona a seleção ao botão clicado
+			this.classList.add('selected');
+
+			// 3. Adiciona o destaque à coluna correspondente
+			const planIndex = plans.indexOf(selectedPlan) + 2; // +2 para pular a primeira coluna de descrição
+
+			table.querySelectorAll('tr').forEach(row => {
+				const cells = row.querySelectorAll('td, th');
+				if (cells.length > planIndex - 1) {
+					// Adiciona a classe 'highlighted' à linha para estilizar a coluna
+					row.classList.add('highlighted');
+				}
+			});
+
+			// 4. Salva o plano selecionado (opcional, mas útil para futuras expansões)
+			localStorage.setItem('selectedPlan', selectedPlan);
+		});
+	});
+
+	// Tenta carregar o plano selecionado ao iniciar
+	const initialPlan = localStorage.getItem('selectedPlan') || 'standard';
+	const initialButton = document.querySelector(`.plan-selector-button[data-plan="${initialPlan}"]`);
+	if (initialButton) {
+		initialButton.click();
+	} else {
+		// Se não houver plano salvo, seleciona o Standard por padrão
+		document.querySelector('.plan-selector-button[data-plan="standard"]').click();
+	}
+}
+
 // --- LÓGICA DE INPUTS DA CALCULADORA ---
 
 function setupCalculatorInputs() {
 	// Apenas vincula o evento de clique ao botão calcular
 	document.getElementById('calculate-button').addEventListener('click', calculateTotals);
+
+	// Vincula o evento de clique ao checkbox do ERP
+	const erpCheckbox = document.getElementById('erp-integration-checkbox');
+	if (erpCheckbox) {
+		erpCheckbox.addEventListener('change', calculateTotals);
+	}
 }
 
 // Inicialização
@@ -173,10 +230,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	// 1. Configurar campos editáveis
 	setupEditableFields();
 
-	// 2. Configurar inputs da calculadora (apenas o botão)
+	// 2. Configurar inputs da calculadora (apenas o botão) e checkbox do ERP
 	setupCalculatorInputs();
 
-	// 3. Calcular totais iniciais (Setup e Mensalidade Base)
+	// 3. Configurar a seleção de plano
+	setupPlanSelector();
+
+	// 4. Calcular totais iniciais (Setup e Mensalidade Base)
 	// O cálculo inicial é importante para preencher os totais de Setup e a Mensalidade base.
+	// O setupPlanSelector já chama calculateTotals() indiretamente, mas vamos garantir.
 	calculateTotals();
 });
